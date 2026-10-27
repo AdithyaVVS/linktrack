@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
@@ -31,3 +31,15 @@ def create_link(
         db.refresh(link)
         return link
     raise CodeGenerationError("Could not generate a unique short code")
+
+
+def get_link_by_code(db: Session, short_code: str) -> Link | None:
+    return db.query(Link).filter(Link.short_code == short_code).first()
+
+
+def is_link_usable(link: Link) -> bool:
+    if not link.is_active:
+        return False
+    if link.expires_at is not None and link.expires_at <= datetime.now(timezone.utc):
+        return False
+    return True
