@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 
 from pydantic import BaseModel, ConfigDict, HttpUrl, field_validator
 
@@ -28,3 +28,20 @@ class LinkOut(BaseModel):
     created_at: datetime
     expires_at: datetime | None
     is_active: bool
+
+
+class LinkListItem(LinkOut):
+    click_count: int
+
+
+class DailyClicks(BaseModel):
+    day: date
+    clicks: int
+
+
+class LinkStats(BaseModel):
+    short_code: str
+    original_url: str
+    total_clicks: int
+    last_clicked_at: datetime | None
+    clicks_by_day: list[DailyClicks]
