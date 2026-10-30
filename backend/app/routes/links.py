@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException, Response
+from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from sqlalchemy.orm import Session
 
 from app.config import settings
 from app.database import get_db
+from app.limiter import limiter
 from app.schemas import LinkCreate, LinkListItem, LinkOut, LinkStats
 from app.services.links import CodeGenerationError, create_link, get_link_by_code
 from app.services.stats import get_link_stats, list_links_with_counts
@@ -22,7 +23,8 @@ def to_out(link) -> LinkOut:
 
 
 @router.post("", response_model=LinkOut, status_code=201)
-def create_short_link(payload: LinkCreate, db: Session = Depends(get_db)):
+@limiter.limit(settings.create_rate_limit)
+def create_short_link(request: Request, payload: LinkCreate, db: Session = Depends(get_db)):
     try:
         link = create_link(db, str(payload.original_url), payload.expires_at)
     except CodeGenerationError:

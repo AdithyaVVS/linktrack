@@ -23,6 +23,8 @@ def clean_database(monkeypatch):
     Base.metadata.create_all(engine)
     # The background click recorder opens its own session, so point it at the test DB too.
     monkeypatch.setattr(clicks_service, "SessionLocal", TestingSessionLocal)
+    from app.limiter import limiter
+    limiter.enabled = False
 
 
 @pytest.fixture

@@ -1,11 +1,27 @@
 from datetime import date, datetime, timezone
+from urllib.parse import urlparse
 
 from pydantic import BaseModel, ConfigDict, HttpUrl, field_validator
+
+from app.config import settings
+
+MAX_URL_LENGTH = 2048
 
 
 class LinkCreate(BaseModel):
     original_url: HttpUrl
     expires_at: datetime | None = None
+
+    @field_validator("original_url")
+    @classmethod
+    def url_must_be_reasonable(cls, value):
+        text = str(value)
+        if len(text) > MAX_URL_LENGTH:
+            raise ValueError(f"URL must be at most {MAX_URL_LENGTH} characters")
+        own_host = urlparse(settings.base_url).hostname
+        if own_host and (value.host or "").lower() == own_host.lower():
+            raise ValueError("Cannot shorten a link that points to LinkTrack itself")
+        return value
 
     @field_validator("expires_at")
     @classmethod
