@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkTrack - Stats</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav>
+    <span class="brand">LinkTrack</span>
+    <a href="index.html">Create</a>
+    <a href="links.html">My Links</a>
+  </nav>
+
+  <main>
+    <div class="card">
+      <h1>Link stats</h1>
+      <div id="error" class="message error" hidden></div>
+
+      <div id="content" hidden>
+        <p class="muted" id="original-url"></p>
+        <div class="stat-grid">
+          <div class="stat"><div class="value" id="total">0</div><div class="label">Total clicks</div></div>
+          <div class="stat"><div class="value" id="last-click">-</div><div class="label">Last click</div></div>
+        </div>
+        <canvas id="chart" height="120"></canvas>
+        <p id="no-data" class="muted" hidden>No clicks yet. Visit the short link to see data here.</p>
+      </div>
+
+      <p style="margin-top: 20px;"><a href="links.html">&larr; Back to My Links</a></p>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script src="js/api.js"></script>
+  <script src="js/stats.js"></script>
+</body>
+</html>

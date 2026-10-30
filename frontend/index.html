@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkTrack - Create</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav>
+    <span class="brand">LinkTrack</span>
+    <a href="index.html" class="active">Create</a>
+    <a href="links.html">My Links</a>
+  </nav>
+
+  <main>
+    <div class="card">
+      <h1>Shorten a link</h1>
+      <form id="create-form">
+        <label for="url">Long URL</label>
+        <input id="url" type="text" placeholder="https://example.com/some/long/page" required>
+
+        <label for="expires">Expires at (optional)</label>
+        <input id="expires" type="datetime-local">
+
+        <div style="margin-top: 18px;">
+          <button type="submit">Create short link</button>
+        </div>
+      </form>
+
+      <div id="error" class="message error" hidden></div>
+
+      <div id="result" hidden>
+        <div class="message success">Your short link is ready:</div>
+        <div class="result">
+          <input id="short-url" type="text" readonly>
+          <button id="copy-btn" type="button" class="secondary">Copy</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/create.js"></script>
+</body>
+</html>
